@@ -4,3 +4,8 @@ export type Stick = {
     title: string
     description: string
 }
+
+export type ErrorProductNotFound = {
+    message: string,
+    statusCode: 404
+}

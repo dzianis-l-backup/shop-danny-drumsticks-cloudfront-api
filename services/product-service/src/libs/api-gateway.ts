@@ -19,24 +19,34 @@ const CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
 }
 
-export const formatJSONResponse = (
-    response: Record<string, unknown> | Record<string, unknown>[] | null
-) => {
-    if (!response) {
+const STATUS_CODE_OK = 200
+
+export const formatJSONResponse = (response: {
+    payload?: Record<string, unknown> | Record<string, unknown>[] | null
+    error?: {
+        message: string
+        statusCode: number
+    }
+}) => {
+    const { payload, error } = response
+
+    if (error) {
+        const { statusCode, ...errorBody } = error
+
         return {
-            statusCode: 404,
+            statusCode,
             headers: {
                 ...CORS_HEADERS,
             },
-            body: null,
+            body: JSON.stringify(errorBody),
         }
     }
 
     return {
-        statusCode: 200,
+        statusCode: STATUS_CODE_OK,
         headers: {
             ...CORS_HEADERS,
         },
-        body: JSON.stringify(response),
+        body: JSON.stringify(payload),
     }
 }

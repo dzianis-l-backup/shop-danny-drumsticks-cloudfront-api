@@ -3,7 +3,7 @@ import { ProductsController } from "@controllers/productsController"
 
 export const getProductsById = async (event) => {
     const id = event?.pathParameters?.id
-    const stick = await ProductsController.getProductsById(id)
+    const [stick, error] = await ProductsController.getProductsById(id)
 
-    return formatJSONResponse(stick)
+    return formatJSONResponse({ payload: stick, error })
 }
