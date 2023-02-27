@@ -1,36 +1,31 @@
-type Stick = {
-    id: string
-    price: number
-    title: string
-    description: string
-}
+import { Stick } from "../types"
 
-export const STICKS_MOCK: Stick[] = [
+export const getSticksMock: () => Promise<Stick[]> = async () => [
     {
         description:
             "The ProMark Rebound 5A drumstick features an acorn tip shape and a long taper, producing a rear-weighted feel that is ideal for agility.",
-        id: "7567ec4b-b10c-48c5-9345-fc73c48a80aa",
+        id: "MmSn-r5HPA",
         price: 24,
         title: "promark5a",
     },
     {
         description:
             "The ProMark Classic Forward 5B drumstick features an oval tip shape and a short taper, producing a forward-weighted feel for increased power.",
-        id: "7567ec4b-b10c-48c5-9345-fc73c48a80a1",
+        id: "m6Gkc19AVw",
         price: 15,
         title: "promark5b",
     },
     {
         description:
             'Vater Power 5A Drumsticks Features: 0.58", 16" length; Hickory; 1/2" of extra length provides extended reach and increased weight.',
-        id: "7567ec4b-b10c-48c5-9345-fc73c48a80a3",
+        id: "YUwynxzqQe",
         price: 23,
         title: "vater5a",
     },
     {
         description:
             "Balancing power, finesse, and durability, the 5B stick size is a longstanding rock favorite.",
-        id: "7567ec4b-b10c-48c5-9345-fc73348a80a1",
+        id: "DyuDT2uO7N",
         price: 15,
         title: "vater5b",
     },
@@ -43,7 +38,7 @@ export const STICKS_MOCK: Stick[] = [
     {
         description:
             "Vic Firth 5B American classic drumsticks line combines tradition and Vic Firth style.",
-        id: "7567ec4b-b10c-45c5-9345-fc73c48a80a1",
+        id: "YPctHB693b",
         price: 15,
         title: "vicfirth5b",
     },

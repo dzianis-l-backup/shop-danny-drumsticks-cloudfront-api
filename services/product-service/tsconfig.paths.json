@@ -10,6 +10,9 @@
       ],
       "@mocks/*": [
         "src/mocks/*"
+      ],
+      "@controllers/*": [
+        "src/controllers/*"
       ]
     }
   }
