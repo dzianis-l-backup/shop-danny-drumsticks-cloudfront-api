@@ -31,7 +31,7 @@ export const getSticksMock: () => Promise<Stick[]> = async () => [
     },
     {
         description: "Vic Firth 5A American Classic Hickory.",
-        id: "7567ec4b-b10c-48c5-9445-fc73c48a80a2",
+        id: "7567ec4b3d",
         price: 23,
         title: "vicfirth5a",
     },

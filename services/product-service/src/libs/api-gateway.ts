@@ -20,8 +20,18 @@ const CORS_HEADERS = {
 }
 
 export const formatJSONResponse = (
-    response: Record<string, unknown> | null
+    response: Record<string, unknown> | Record<string, unknown>[] | null
 ) => {
+    if (!response) {
+        return {
+            statusCode: 404,
+            headers: {
+                ...CORS_HEADERS,
+            },
+            body: null,
+        }
+    }
+
     return {
         statusCode: 200,
         headers: {
