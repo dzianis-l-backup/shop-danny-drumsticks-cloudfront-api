@@ -1,4 +1,4 @@
-import { Stick, ErrorProductNotFound } from "../types"
+import { Stick, ErrorNotFound } from "../types"
 import { getSticksMock } from "@mocks/products"
 
 export abstract class ProductsController {
@@ -8,7 +8,7 @@ export abstract class ProductsController {
 
     static async getProductsById(
         id: string
-    ): Promise<[Stick | undefined, ErrorProductNotFound | undefined]> {
+    ): Promise<[Stick | undefined, ErrorNotFound | undefined]> {
         const stick =
             (await getSticksMock()).find((stick) => stick.id === id) || null
 

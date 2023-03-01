@@ -5,7 +5,9 @@ export type Stick = {
     description: string
 }
 
-export type ErrorProductNotFound = {
-    message: string,
+export type Sticks = Stick[]
+
+export type ErrorNotFound = {
+    message: string
     statusCode: 404
 }
