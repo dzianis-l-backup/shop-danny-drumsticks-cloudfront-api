@@ -38,7 +38,7 @@ The `procuct-service`'s been created through the `aws-nodejs-typescript` templat
 
 -   +5 - ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done` Async/await is used in lambda functions
 -   +5 - ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done` Async/await is used in lambda functions ES6 modules are used for Product Service implementation
--   +4 - ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` Custom Webpack/ESBuild/etc is manually configured for Product Service. Not applicable for preconfigured/built-in bundlers that come with templates, plugins, etc.
+-   +4 - ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done` Custom Webpack/ESBuild/etc is manually configured for Product Service. Not applicable for preconfigured/built-in bundlers that come with templates, plugins, etc.
 -   +4 (All languages) - ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done` - SWAGGER documentation is created for Product Service
 -   +4 (All languages) - ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done`- Lambda handlers are covered by basic UNIT tests (NO infrastructure logic is needed to be covered)
 -   +4 (All languages) - ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done` - Lambda handlers (getProductsList, getProductsById) code is written not in 1 single module (file) and separated in codebase.
