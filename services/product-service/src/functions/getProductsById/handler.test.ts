@@ -1,5 +1,6 @@
 import { getProductsById } from "./handler"
 import { getSticksMock } from "@mocks/products"
+import { HttpStatusesMessages } from "@constants/http"
 
 jest.mock("aws-sdk", () => {
     const module = jest.requireActual("@mocks/products")
@@ -55,7 +56,7 @@ describe("product-service", () => {
 
             expect(response.statusCode).toBe(404)
             expect(JSON.parse(response.body)).toEqual({
-                message: `Product with id ${productId} not found`,
+                message: HttpStatusesMessages[404],
             })
         })
     })

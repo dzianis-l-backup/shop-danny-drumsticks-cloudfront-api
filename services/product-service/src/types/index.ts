@@ -16,5 +16,19 @@ export type Sticks = Stick[]
 
 export type ErrorNotFound = {
     message: string
-    statusCode: 404
+    statusCode: HttpStatuses.NOT_FOUND
+}
+
+export enum HttpStatuses {
+    OK = 200,
+    CREATED = 201,
+    NOT_FOUND = 404,
+}
+
+export interface StatusCode {
+    statusCode: HttpStatuses
+}
+
+export interface ControllerResponse<T> extends StatusCode {
+    payload: T | undefined,
 }

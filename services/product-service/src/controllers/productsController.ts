@@ -1,10 +1,17 @@
-import { Stick, ErrorNotFound, Stock, StickStock } from "../types"
+import {
+    Stick,
+    Stock,
+    StickStock,
+    HttpStatuses,
+    ControllerResponse,
+} from "../types"
 import AWS from "aws-sdk"
+import { v4 as uuid4 } from "uuid"
 
 const dynamo = new AWS.DynamoDB.DocumentClient({ region: process.env.REGION })
 
 export abstract class ProductsController {
-    static async getProductsList(): Promise<Stick[]> {
+    static async getProductsList(): Promise<ControllerResponse<Stick[]>> {
         const productsResults = await dynamo
             .scan({
                 TableName: process.env.TABLE_PRODUCTS,
@@ -28,12 +35,12 @@ export abstract class ProductsController {
             ).count,
         }))
 
-        return sticksStocks
+        return { payload: sticksStocks, statusCode: HttpStatuses.OK }
     }
 
     static async getProductsById(
         id: string
-    ): Promise<[Stick | undefined, ErrorNotFound | undefined]> {
+    ): Promise<ControllerResponse<Stick>> {
         const results = await dynamo
             .query({
                 TableName: process.env.TABLE_PRODUCTS,
@@ -43,16 +50,37 @@ export abstract class ProductsController {
             .promise()
 
         const stick = results.Items?.[0] as Stick
-        if (!stick) {
-            return [
-                null,
-                {
-                    message: `Product with id ${id} not found`,
-                    statusCode: 404,
-                },
-            ]
-        }
 
-        return [stick, undefined]
+        return {
+            payload: stick ? stick : undefined,
+            statusCode: stick ? HttpStatuses.OK : HttpStatuses.NOT_FOUND,
+        }
+    }
+
+    static async createProduct(
+        stickRaw: Omit<StickStock, StickStock["id"]>
+    ): Promise<ControllerResponse<Stick>> {
+        const stickStock = { id: uuid4(), ...stickRaw } as StickStock
+        const { count, ...stick } = stickStock
+        const stock = { count, product_id: stick.id }
+
+        await dynamo
+            .put({
+                TableName: process.env.TABLE_PRODUCTS,
+                Item: stick,
+            })
+            .promise()
+
+        await dynamo
+            .put({
+                TableName: process.env.TABLE_STOCKS,
+                Item: stock,
+            })
+            .promise()
+
+        return {
+            payload: stick,
+            statusCode: HttpStatuses.OK,
+        }
     }
 }

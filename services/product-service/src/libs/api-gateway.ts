@@ -4,7 +4,13 @@ import type {
     Handler,
 } from "aws-lambda"
 import type { FromSchema } from "json-schema-to-ts"
-import { ErrorNotFound } from "../types"
+import {  HttpStatuses } from "../types"
+
+const HttpStatusesMessages = {
+    [HttpStatuses.NOT_FOUND]: "Not Found",
+    [HttpStatuses.OK]: "OK",
+    [HttpStatuses.CREATED]: "Created",
+}
 
 type ValidatedAPIGatewayProxyEvent<S> = Omit<APIGatewayProxyEvent, "body"> & {
     body: FromSchema<S>
@@ -20,28 +26,30 @@ const CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
 }
 
-const STATUS_CODE_OK = 200
+const HTTP_STATUSES_SUCCESS = [HttpStatuses.OK, HttpStatuses.CREATED]
 
 export const formatJSONResponse = <T>(response: {
     payload?: Record<string, unknown> | Record<string, unknown>[] | T | null
-    error?: ErrorNotFound
+    statusCode?: HttpStatuses
 }) => {
-    const { payload, error } = response
+    const { payload, statusCode } = response
 
-    if (error) {
-        const { statusCode, ...errorBody } = error
+    if (!HTTP_STATUSES_SUCCESS.includes(statusCode)) {
+        const error = {
+            message: HttpStatusesMessages[statusCode],
+        }
 
         return {
             statusCode,
             headers: {
                 ...CORS_HEADERS,
             },
-            body: JSON.stringify(errorBody),
+            body: JSON.stringify(error),
         }
     }
 
     return {
-        statusCode: STATUS_CODE_OK,
+        statusCode,
         headers: {
             ...CORS_HEADERS,
         },
