@@ -6,6 +6,7 @@ export type Stick = {
 }
 
 export type StickStock = Stick & { count: Stock["count"] }
+export type SticksStocks = StickStock[]
 
 export type Stock = {
     product_id: string
@@ -30,5 +31,5 @@ export interface StatusCode {
 }
 
 export interface ControllerResponse<T> extends StatusCode {
-    payload: T | undefined,
+    payload: T | undefined
 }

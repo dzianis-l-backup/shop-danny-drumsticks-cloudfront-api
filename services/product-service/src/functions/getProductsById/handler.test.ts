@@ -1,32 +1,60 @@
 import { getProductsById } from "./handler"
 import { getSticksMock } from "@mocks/products"
 import { HttpStatusesMessages } from "@constants/http"
+import { getStocksMock } from "@mocks/stocks"
+import { StickStock } from "src/types"
 
 jest.mock("aws-sdk", () => {
-    const module = jest.requireActual("@mocks/products")
+    const moduleProducts = jest.requireActual("@mocks/products")
+    const moduleStocks = jest.requireActual("@mocks/stocks")
+    const productsPromise = Promise.resolve(moduleProducts.getSticksMock())
+    const stocksPromise = Promise.resolve(moduleStocks.getStocksMock())
+
     const AWS = {
         DynamoDB: {
             DocumentClient: jest.fn(() => ({
                 scan: jest.fn(() => ({
                     promise: jest.fn(() =>
-                        Promise.resolve(module.getSticksMock()).then(
-                            (sticks) => ({
-                                Items: sticks,
-                            })
-                        )
+                        Promise.resolve(productsPromise).then((sticks) => ({
+                            Items: sticks,
+                        }))
                     ),
                 })),
                 query: jest.fn(
-                    ({ ExpressionAttributeValues: { ":id": id } }) => ({
-                        promise: jest.fn(() =>
-                            Promise.resolve(module.getSticksMock()).then(
-                                (sticks) => ({
-                                    Items: [
-                                        sticks.find((stick) => stick.id === id),
-                                    ],
+                    ({
+                        TableName,
+                        ExpressionAttributeValues: {
+                            ":id": id,
+                            ":product_id": product_id,
+                        },
+                    }) => ({
+                        promise: jest.fn(() => {
+                            if (TableName === process.env.TABLE_PRODUCTS) {
+                                return productsPromise.then((sticks) => {
+                                    return {
+                                        Items: [
+                                            sticks.find(
+                                                (stick) => stick.id === id
+                                            ),
+                                        ],
+                                    }
                                 })
-                            )
-                        ),
+                            }
+
+                            if (TableName === process.env.TABLE_STOCKS) {
+                                return stocksPromise.then((stocks) => {
+                                    return {
+                                        Items: [
+                                            stocks.find(
+                                                (stock) =>
+                                                    stock.product_id ===
+                                                    product_id
+                                            ),
+                                        ],
+                                    }
+                                })
+                            }
+                        }),
                     })
                 ),
             })),
@@ -40,12 +68,19 @@ describe("product-service", () => {
     describe("getProductsList", () => {
         it("should return a product with a given id", async () => {
             const [stickFirst] = await getSticksMock()
+            const stocks = await getStocksMock()
+            const stickStock: StickStock = {
+                ...stickFirst,
+                count: stocks.find(
+                    (stock) => stock.product_id === stickFirst.id
+                ).count,
+            }
             const response = await getProductsById({
                 pathParameters: { id: stickFirst.id },
             })
 
             expect(response.statusCode).toEqual(200)
-            expect(JSON.parse(response.body)).toEqual(stickFirst)
+            expect(JSON.parse(response.body)).toEqual(stickStock)
         })
 
         it("should return 404 for a missing id", async () => {

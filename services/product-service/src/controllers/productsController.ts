@@ -40,8 +40,8 @@ export abstract class ProductsController {
 
     static async getProductsById(
         id: string
-    ): Promise<ControllerResponse<Stick>> {
-        const results = await dynamo
+    ): Promise<ControllerResponse<StickStock>> {
+        const resultProducts = await dynamo
             .query({
                 TableName: process.env.TABLE_PRODUCTS,
                 KeyConditionExpression: "id = :id",
@@ -49,11 +49,29 @@ export abstract class ProductsController {
             })
             .promise()
 
-        const stick = results.Items?.[0] as Stick
+        const stick = resultProducts.Items?.[0] as Stick
+
+        if (!stick) {
+            return {
+                payload: undefined,
+                statusCode: HttpStatuses.NOT_FOUND,
+            }
+        }
+
+        const resultStocks = await dynamo
+            .query({
+                TableName: process.env.TABLE_STOCKS,
+                KeyConditionExpression: "product_id = :product_id",
+                ExpressionAttributeValues: { ":product_id": id },
+            })
+            .promise()
+
+        const stock = resultStocks.Items?.[0] as Stock
+        const stickStock = { ...stick, count: stock.count }
 
         return {
-            payload: stick ? stick : undefined,
-            statusCode: stick ? HttpStatuses.OK : HttpStatuses.NOT_FOUND,
+            payload: stickStock,
+            statusCode: HttpStatuses.OK,
         }
     }
 
@@ -80,7 +98,7 @@ export abstract class ProductsController {
 
         return {
             payload: stick,
-            statusCode: HttpStatuses.OK,
+            statusCode: HttpStatuses.CREATED,
         }
     }
 }

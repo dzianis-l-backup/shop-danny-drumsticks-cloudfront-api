@@ -11,7 +11,7 @@ export default {
                 responses: {
                     201: {
                         description: "Created",
-                        bodyType: "Stick",
+                        bodyType: "StickStock",
                     },
                 },
             },

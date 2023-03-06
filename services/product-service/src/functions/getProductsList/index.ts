@@ -11,7 +11,7 @@ export default {
                 responses: {
                     200: {
                         description: "OK",
-                        bodyType: "Sticks",
+                        bodyType: "SticksStocks",
                     },
                 },
             },

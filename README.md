@@ -2,17 +2,47 @@
 
 This is a monorepo for AWS API provisioning for the Danny drumsticks store
 
+# Links
+
+-   [Cloudfront FE side](https://d2d25cyeqtftsg.cloudfront.net/)
+-   [/products GET](https://xun888d5wf.execute-api.eu-west-1.amazonaws.com/dev/products)
+-   [/products POST](https://xun888d5wf.execute-api.eu-west-1.amazonaws.com/dev/products)
+-   [/products/{id} GET](https://xun888d5wf.execute-api.eu-west-1.amazonaws.com/dev/products/m6Gkc19AVw)
+-   [swagger](https://eqkv6cw9rf.execute-api.eu-west-1.amazonaws.com/swagger.json)
+-   [swagger-ui](https://eqkv6cw9rf.execute-api.eu-west-1.amazonaws.com/swagger)
+# Task 4
+
+## Task 4.1
+1. `Products` and `Stocks` DynamoDb tables've been created
+2. The [fill script](./services/product-service/src/db/dynamodb-fill.mjs) for data generation from mocks
+
+## Task 4.2
+1. serverless.ts is extended with iam role creation for dynamodb access and with environment variables storing the region, products and stocks tables
+2. `λ getProductsList` returns joined response from Stocks and Products tables
+3. `λ getProductsById` returns joined respoins from a product and the respective stock
+4. `λ getProductsById` integrated with `/products/{id}`
+
+## Task 4.3
+1. `λ  createProduct` created
+2. `/products` POST endpoint
+3. business-logic created to post a new product and the according stock 
+4. the URL added to the links section [/products POST](https://xun888d5wf.execute-api.eu-west-1.amazonaws.com/dev/products)
+
+## Task 4.4
+PR 
+
+## Additional (optional) tasks
+- +6 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` -  POST /products lambda functions returns error 400 status code if product data is invalid
+- +6 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress`  - All lambdas return error 500 status code on any error (DB connection, any unhandled error in code)
+- +6 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` - All lambdas do console.log for each incoming requests and their arguments
+- +6 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` - Use RDS instance instead fo DynamoDB tables. Do not commit your environment variables in serverless.yml to github!
+- +6 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` - Transaction based creation of product (in case stock creation is failed then related to this stock product is not created and not ready to be used by the end user and vice versa)
+
 # Task 3
 
 The `procuct-service`'s been created through the `aws-nodejs-typescript` template in the services monorepo.
 
-## Links
 
--   [Cloudfront FE side](https://d2d25cyeqtftsg.cloudfront.net/)
--   [/products](https://xun888d5wf.execute-api.eu-west-1.amazonaws.com/dev/products)
--   [/products/{id}](https://xun888d5wf.execute-api.eu-west-1.amazonaws.com/dev/products/m6Gkc19AVw)
--   [swagger](https://eqkv6cw9rf.execute-api.eu-west-1.amazonaws.com/swagger.json)
--   [swagger-ui](https://eqkv6cw9rf.execute-api.eu-west-1.amazonaws.com/swagger)
 
 ## Task 3.1 getProductsList λ
 
