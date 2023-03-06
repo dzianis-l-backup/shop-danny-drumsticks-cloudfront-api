@@ -28,7 +28,7 @@
         "serverless-webpack": "^5.11.0",
         "terser-webpack-plugin": "^5.3.6",
         "ts-loader": "^9.4.2",
-        "ts-node": "^10.4.0",
+        "ts-node": "^10.9.1",
         "tsconfig-paths": "^3.9.0",
         "tsconfig-paths-webpack-plugin": "^4.0.0",
         "typescript": "^4.1.3",
