@@ -7,8 +7,9 @@ import Stocks from "../mocks/stocksMock.json" assert { type: "json" }
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+const pathToEnv = path.join(__dirname, "../../../.env")
 
-dotenv.config({ path: path.join(__dirname, "../../.env") })
+dotenv.config({ path: pathToEnv })
 console.info("For the region %s", process.env.REGION)
 
 // Set the region

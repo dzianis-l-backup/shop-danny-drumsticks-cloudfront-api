@@ -5,7 +5,6 @@ const slsw = require("serverless-webpack")
 module.exports = (async () => {
     // const accountId = await slsw.lib.serverless.providers.aws.getAccountId()
     const webpack = await slsw.webpack
-    console.log(webpack)
 
     return {
         entry: slsw.lib.entries,

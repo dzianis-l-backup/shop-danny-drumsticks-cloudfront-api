@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`product-service getProductsList should return the list of available products 1`] = `
+[
+  {
+    "description": "Vic Firth 5A American Classic Hickory.",
+    "id": "f8d567e2-ebd9-4020-9399-9b49d22fe8d6",
+    "price": 23,
+    "title": "vicfirth5a",
+  },
+  {
+    "description": "Vic Firth 5B American classic drumsticks line combines tradition and Vic Firth style.",
+    "id": "1458b590-ad8e-45e7-aad9-94964d00d852",
+    "price": 15,
+    "title": "vicfirth5b",
+  },
+  {
+    "description": "Vater Power 5A Drumsticks Features: 0.58", 16" length; Hickory; 1/2" of extra length provides extended reach and increased weight.",
+    "id": "d3614653-006f-44f7-a4db-3d9aaf8ec9e0",
+    "price": 23,
+    "title": "vater5a",
+  },
+  {
+    "description": "Balancing power, finesse, and durability, the 5B stick size is a longstanding rock favorite.",
+    "id": "31b2af6d-0a88-4136-804a-430e0f3a5b9a",
+    "price": 15,
+    "title": "vater5b",
+  },
+  {
+    "description": "The ProMark Classic Forward 5B drumstick features an oval tip shape and a short taper, producing a forward-weighted feel for increased power.",
+    "id": "97b13d18-350f-481d-b460-d515e848d794",
+    "price": 15,
+    "title": "promark5b",
+  },
+  {
+    "description": "The ProMark Rebound 5A drumstick features an acorn tip shape and a long taper, producing a rear-weighted feel that is ideal for agility.",
+    "id": "8504f8d8-c6b4-45f4-ae76-70c6b6fc49bf",
+    "price": 24,
+    "title": "promark5a",
+  },
+]
+`;

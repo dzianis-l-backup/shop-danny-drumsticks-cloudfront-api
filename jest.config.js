@@ -18,6 +18,7 @@ module.exports = {
             modulePaths: ["<rootDir>/services/product-service"],
             // https://stackoverflow.com/questions/52860868/typescript-paths-not-resolving-when-running-jest
             moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
+            setupFiles: ["<rootDir>/.jest/setup-env.js"],
         },
     ],
 }
