@@ -5,7 +5,9 @@
       "ESNext"
     ],
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "noUnusedLocals": true,
+    "allowSyntheticDefaultImports": true,
     "noUnusedParameters": true,
     "removeComments": true,
     "sourceMap": true,
