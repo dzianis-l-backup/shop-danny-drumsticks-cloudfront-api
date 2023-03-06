@@ -4,9 +4,9 @@ import { StickStock } from "src/types"
 import { middyfy } from "@libs/lambda"
 
 export const createProduct = middyfy(
-    async (stickRaw: Omit<StickStock, StickStock["id"]>) => {
+    async ({ body }: { body: Omit<StickStock, StickStock["id"]> }) => {
         const { payload: stick, statusCode } =
-            await ProductsController.createProduct(stickRaw)
+            await ProductsController.createProduct(body)
 
         return formatJSONResponse({ payload: stick, statusCode })
     }
