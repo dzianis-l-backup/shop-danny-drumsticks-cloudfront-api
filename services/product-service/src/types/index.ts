@@ -5,6 +5,13 @@ export type Stick = {
     description: string
 }
 
+export type StickStock = Stick & { count: Stock["count"] }
+
+export type Stock = {
+    product_id: string
+    count: number
+}
+
 export type Sticks = Stick[]
 
 export type ErrorNotFound = {

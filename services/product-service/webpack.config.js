@@ -1,6 +1,8 @@
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin")
 const path = require("path")
 const slsw = require("serverless-webpack")
+const TerserPlugin = require('terser-webpack-plugin');
+
 
 module.exports = (async () => {
     // const accountId = await slsw.lib.serverless.providers.aws.getAccountId()
@@ -31,5 +33,10 @@ module.exports = (async () => {
                 new TsconfigPathsPlugin({ configFile: "tsconfig.paths.json" }),
             ],
         },
+        optimization: {
+            minimizer: [new TerserPlugin({
+              extractComments: false,
+            })],
+          },
     }
 })()
