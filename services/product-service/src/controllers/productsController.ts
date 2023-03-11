@@ -7,6 +7,7 @@ import {
 } from "../types"
 import AWS from "aws-sdk"
 import { v4 as uuid4 } from "uuid"
+import { createProductSchema } from "@validation/createProduct"
 
 const dynamo = new AWS.DynamoDB.DocumentClient({ region: process.env.REGION })
 
@@ -82,23 +83,32 @@ export abstract class ProductsController {
         const { count, ...stick } = stickStock
         const stock = { count, product_id: stick.id }
 
-        await dynamo
-            .put({
-                TableName: process.env.TABLE_PRODUCTS,
-                Item: stick,
-            })
-            .promise()
+        try {
+            await createProductSchema.validate(stickStock)
 
-        await dynamo
-            .put({
-                TableName: process.env.TABLE_STOCKS,
-                Item: stock,
-            })
-            .promise()
+            await dynamo
+                .put({
+                    TableName: process.env.TABLE_PRODUCTS,
+                    Item: stick,
+                })
+                .promise()
 
-        return {
-            payload: stick,
-            statusCode: HttpStatuses.CREATED,
+            await dynamo
+                .put({
+                    TableName: process.env.TABLE_STOCKS,
+                    Item: stock,
+                })
+                .promise()
+
+            return {
+                payload: stick,
+                statusCode: HttpStatuses.CREATED,
+            }
+        } catch {
+            return {
+                payload: null,
+                statusCode: HttpStatuses.BAD_REQUEST,
+            }
         }
     }
 }

@@ -16,6 +16,9 @@
       ],
       "@constants/*": [
         "src/constants/*"
+      ],
+      "@validation/*": [
+        "src/validation/*"
       ]
     }
   }

@@ -4,12 +4,13 @@ import type {
     Handler,
 } from "aws-lambda"
 import type { FromSchema } from "json-schema-to-ts"
-import {  HttpStatuses } from "../types"
+import { HttpStatuses } from "../types"
 
 const HttpStatusesMessages = {
     [HttpStatuses.NOT_FOUND]: "Not Found",
     [HttpStatuses.OK]: "OK",
     [HttpStatuses.CREATED]: "Created",
+    [HttpStatuses.BAD_REQUEST]: "Bad Request",
 }
 
 type ValidatedAPIGatewayProxyEvent<S> = Omit<APIGatewayProxyEvent, "body"> & {

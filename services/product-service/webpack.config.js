@@ -6,6 +6,9 @@ const TerserPlugin = require("terser-webpack-plugin")
 module.exports = (async () => {
     return {
         mode: slsw.lib.webpack.isLocal ? "development" : "production",
+        devtool: slsw.lib.webpack.isLocal
+            ? "inline-cheap-source-map"
+            : undefined,
         entry: slsw.lib.entries,
         output: {
             libraryTarget: "commonjs",
