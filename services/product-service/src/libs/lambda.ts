@@ -1,11 +1,14 @@
 import middy from "@middy/core"
 import middyJsonBodyParser from "@middy/http-json-body-parser"
-import { errorHandler } from "./errorMiddleware"
+import { errorMiddleware } from "./errorMiddleware"
+import { loggingMiddleware } from "./loggingMiddleware"
 
 export const middyfyPost = (handler: any) => {
-    return middy(errorHandler(handler)).use(middyJsonBodyParser())
+    return middy(errorMiddleware(loggingMiddleware(handler))).use(
+        middyJsonBodyParser()
+    )
 }
 
 export const middyfyGet = (handler: any) => {
-    return middy(errorHandler(handler))
+    return middy(errorMiddleware(loggingMiddleware(handler)))
 }

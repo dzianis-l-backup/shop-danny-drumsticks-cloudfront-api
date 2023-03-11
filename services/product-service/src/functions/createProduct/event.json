@@ -1,5 +1,5 @@
 {
-    "body": "{\"title\":\"leonty\",\"descron\":\"BLR sticks\",\"price\":4,\"count\": 20}",
+    "body": "{\"title\":\"leonty\",\"description\":\"BLR sticks\",\"price\":4,\"count\": 20}",
     "headers": {
         "Content-Type": "application/json"
     }

@@ -83,8 +83,6 @@ export abstract class ProductsController {
         const { count, ...stick } = stickStock
         const stock = { count, product_id: stick.id }
 
-        throw new Error("should be 500")
-
         try {
             await createProductSchema.validate(stickStock)
 

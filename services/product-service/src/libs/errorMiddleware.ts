@@ -2,7 +2,7 @@ import { HttpStatuses } from "src/types"
 import { formatJSONResponse } from "./api-gateway"
 import { logger } from "./logger"
 
-export const errorHandler =
+export const errorMiddleware =
     <T extends (...args: any[]) => any>(handler: T) =>
     async (...args: Parameters<T>) => {
         try {

@@ -1,3 +1,4 @@
 export const logger = {
-    error: console.log.bind(console),
+    error: console.error.bind(console),
+    log: console.log.bind(console),
 }
