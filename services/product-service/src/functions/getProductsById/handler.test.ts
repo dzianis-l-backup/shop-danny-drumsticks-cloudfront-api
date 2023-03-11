@@ -1,14 +1,18 @@
-import { getProductsById } from "./handler"
+import { getProductsByIdHandler } from "./handler"
 import { getSticksMock } from "@mocks/products"
 import { HttpStatusesMessages } from "@constants/http"
 import { getStocksMock } from "@mocks/stocks"
-import { StickStock } from "src/types"
+import { Stick, StickStock, Stock } from "src/types"
 
 jest.mock("aws-sdk", () => {
     const moduleProducts = jest.requireActual("@mocks/products")
     const moduleStocks = jest.requireActual("@mocks/stocks")
-    const productsPromise = Promise.resolve(moduleProducts.getSticksMock())
-    const stocksPromise = Promise.resolve(moduleStocks.getStocksMock())
+    const productsPromise = Promise.resolve(
+        moduleProducts.getSticksMock() as Stick[]
+    )
+    const stocksPromise = Promise.resolve(
+        moduleStocks.getStocksMock() as Stock[]
+    )
 
     const AWS = {
         DynamoDB: {
@@ -75,7 +79,7 @@ describe("product-service", () => {
                     (stock) => stock.product_id === stickFirst.id
                 ).count,
             }
-            const response = await getProductsById({
+            const response = await getProductsByIdHandler({
                 pathParameters: { id: stickFirst.id },
             })
 
@@ -85,7 +89,7 @@ describe("product-service", () => {
 
         it("should return 404 for a missing id", async () => {
             const productId = "foo"
-            const response = await getProductsById({
+            const response = await getProductsByIdHandler({
                 pathParameters: { id: productId },
             })
 

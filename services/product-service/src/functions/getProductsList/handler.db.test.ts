@@ -1,9 +1,9 @@
-import { getProductsList } from "./handler"
+import { getProductsListHandler } from "./handler"
 
 describe("product-service", () => {
-    describe("getProductsList", () => {
+    describe("getProductsListHandler", () => {
         it.skip("should return the list of available products", async () => {
-            const response = await getProductsList()
+            const response = await getProductsListHandler()
 
             expect(JSON.parse(response.body)).toMatchSnapshot()
         })

@@ -11,6 +11,7 @@ const HttpStatusesMessages = {
     [HttpStatuses.OK]: "OK",
     [HttpStatuses.CREATED]: "Created",
     [HttpStatuses.BAD_REQUEST]: "Bad Request",
+    [HttpStatuses.INTERNAL_SERVER_ERROR]: "Oops guess someone is gonna be fired",
 }
 
 type ValidatedAPIGatewayProxyEvent<S> = Omit<APIGatewayProxyEvent, "body"> & {

@@ -1,4 +1,4 @@
-import { getProductsList } from "./handler"
+import { getProductsListHandler } from "./handler"
 
 jest.mock("aws-sdk", () => {
     const moduleProducts = jest.requireActual("@mocks/products")
@@ -36,9 +36,9 @@ jest.mock("aws-sdk", () => {
 })
 
 describe("product-service", () => {
-    describe("getProductsList", () => {
+    describe("getProductsListHandler", () => {
         it("should return the list of available products", async () => {
-            const response = await getProductsList()
+            const response = await getProductsListHandler()
 
             expect(JSON.parse(response.body)).toMatchSnapshot()
         })
