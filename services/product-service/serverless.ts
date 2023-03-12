@@ -25,8 +25,14 @@ const serverlessConfiguration: AWS = {
         environment: {
             AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
             NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
+            REGION: process.env.REGION,
             TABLE_PRODUCTS: process.env.TABLE_PRODUCTS,
             TABLE_STOCKS: process.env.TABLE_STOCKS,
+            MY_SQL_MASTER_USERNAME: process.env.MY_SQL_MASTER_USERNAME,
+            MY_SQL_MASTER_PASSWORD: process.env.MY_SQL_MASTER_PASSWORD,
+            MY_SQL_HOST: process.env.MY_SQL_HOST,
+            MY_SQL_POST: process.env.MY_SQL_POST,
+            MY_SQL_DATABASE: process.env.MY_SQL_DATABASE,
         },
         iam: {
             role: {

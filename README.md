@@ -32,11 +32,11 @@ This is a monorepo for AWS API provisioning for the Danny drumsticks store
 PR 
 
 ## Additional (optional) tasks
-- +6 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` -  POST /products lambda functions returns error 400 status code if product data is invalid
-- +6 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress`  - All lambdas return error 500 status code on any error (DB connection, any unhandled error in code)
-- +6 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` - All lambdas do console.log for each incoming requests and their arguments
-- +6 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` - Use RDS instance instead fo DynamoDB tables. Do not commit your environment variables in serverless.yml to github!
-- +6 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` - Transaction based creation of product (in case stock creation is failed then related to this stock product is not created and not ready to be used by the end user and vice versa)
+- +6 ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done` -  POST /products lambda functions returns error 400 status code if product data is invalid
+- +6 ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done`  - All lambdas return error 500 status code on any error (DB connection, any unhandled error in code)
+- +6 ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done` - All lambdas do console.log for each incoming requests and their arguments
+- +6 ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done` - Use RDS instance instead fo DynamoDB tables. Do not commit your environment variables in serverless.yml to github!
+- +6 ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done` - Transaction based creation of product (in case stock creation is failed then related to this stock product is not created and not ready to be used by the end user and vice versa)
 
 # Task 3
 
