@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`product-service getProductsList should return the list of available products 1`] = `
+exports[`product-service getProductsListHandler should return the list of available products 1`] = `
 [
   {
     "count": 7,

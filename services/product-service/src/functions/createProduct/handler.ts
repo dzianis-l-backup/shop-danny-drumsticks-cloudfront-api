@@ -6,7 +6,7 @@ import { middyfyPost } from "@libs/lambda"
 export const createProductHandler = async ({
     body,
 }: {
-    body: Omit<StickStock, StickStock["id"]>
+    body: Omit<StickStock, "id">
 }) => {
     const { payload: stick, statusCode } =
         await ProductsController.createProduct(body)
