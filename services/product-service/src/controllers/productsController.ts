@@ -8,6 +8,7 @@ import {
 import AWS from "aws-sdk"
 import { v4 as uuid4 } from "uuid"
 import { createProductSchema } from "@validation/createProduct"
+import { logger } from "@libs/logger"
 
 const dynamo = new AWS.DynamoDB.DocumentClient({ region: process.env.REGION })
 
@@ -77,38 +78,59 @@ export abstract class ProductsController {
     }
 
     static async createProduct(
-        stickRaw: Omit<StickStock, StickStock["id"]>
+        stickRaw: Omit<StickStock, StickStock["id"]> &
+            Partial<Pick<Stick, "id">>
     ): Promise<ControllerResponse<Stick>> {
-        const stickStock = { id: uuid4(), ...stickRaw } as StickStock
+        const stickStock = {
+            id: stickRaw.id || uuid4(),
+            ...stickRaw,
+        } as StickStock
         const { count, ...stick } = stickStock
         const stock = { count, product_id: stick.id }
 
         try {
             await createProductSchema.validate(stickStock)
-
-            await dynamo
-                .put({
-                    TableName: process.env.TABLE_PRODUCTS,
-                    Item: stick,
-                })
-                .promise()
-
-            await dynamo
-                .put({
-                    TableName: process.env.TABLE_STOCKS,
-                    Item: stock,
-                })
-                .promise()
-
-            return {
-                payload: stick,
-                statusCode: HttpStatuses.CREATED,
-            }
         } catch {
             return {
                 payload: null,
                 statusCode: HttpStatuses.BAD_REQUEST,
             }
+        }
+
+        const result = await dynamo
+            .transactWrite({
+                TransactItems: [
+                    {
+                        Put: {
+                            TableName: process.env.TABLE_PRODUCTS,
+                            Item: stick,
+                            ConditionExpression: "attribute_not_exists(id)",
+                        },
+                    },
+                    {
+                        Put: {
+                            TableName: process.env.TABLE_STOCKS,
+                            Item: stock,
+                            ConditionExpression:
+                                "attribute_not_exists(product_id)",
+                        },
+                    },
+                ],
+            })
+            .promise()
+            .then(() => {
+                return { statusCode: HttpStatuses.CREATED }
+            })
+            .catch((error) => {
+                logger.error(error)
+
+                return { statusCode: HttpStatuses.BAD_REQUEST }
+            })
+
+        return {
+            payload:
+                result.statusCode === HttpStatuses.CREATED ? stick : undefined,
+            statusCode: result.statusCode,
         }
     }
 }
