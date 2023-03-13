@@ -7,6 +7,7 @@ const pathToEnv = join(__dirname, "./.env")
 config({ path: pathToEnv })
 
 import importProductsFile from "@functions/importProductsFile"
+import importFileParser from "@functions/importFileParser"
 
 const serverlessConfiguration: AWS = {
     service: "import-service",
@@ -27,7 +28,8 @@ const serverlessConfiguration: AWS = {
             NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
             REGION: process.env.REGION,
             BUCKET_CSV: process.env.BUCKET_CSV,
-            BUCKET_CSV_UPLOADED: process.env.BUCKET_CSV_UPLOADED,
+            BUCKET_CSV_SOURCE: process.env.BUCKET_CSV_SOURCE,
+            BUCKET_CSV_DIST: process.env.BUCKET_CSV_DIST,
         },
         iamRoleStatements: [
             {
@@ -44,7 +46,7 @@ const serverlessConfiguration: AWS = {
     },
 
     // import the function via paths
-    functions: { importProductsFile },
+    functions: { importProductsFile, importFileParser },
     package: { individually: true },
     custom: {
         esbuild: {

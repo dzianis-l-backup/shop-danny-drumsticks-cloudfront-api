@@ -1,4 +1,3 @@
-import { HttpStatuses } from "@const/index"
 import { handlerPath } from "@libs/handler-resolver"
 
 export default {
@@ -14,20 +13,6 @@ export default {
                         querystrings: {
                             name: true,
                         },
-                    },
-                },
-                responses: {
-                    [HttpStatuses.Ok]: {
-                        description: "OK",
-                        bodyType: "string",
-                    },
-                    [HttpStatuses.BadRequest]: {
-                        description: "Not Found",
-                        bodyType: undefined,
-                    },
-                    [HttpStatuses.InternalServerError]: {
-                        description: "Internal Server Error",
-                        bodyType: undefined,
                     },
                 },
             },

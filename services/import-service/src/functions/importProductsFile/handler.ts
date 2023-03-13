@@ -11,7 +11,7 @@ export const importProductsFile = async (event) => {
             return formatJSONResponse({ statusCode: HttpStatuses.BadRequest })
         }
 
-        const dist = `${process.env.BUCKET_CSV_UPLOADED}/${fileName}`
+        const dist = `${process.env.BUCKET_CSV_SOURCE}/${fileName}`
         const params = {
             Bucket: process.env.BUCKET_CSV,
             Key: dist,
