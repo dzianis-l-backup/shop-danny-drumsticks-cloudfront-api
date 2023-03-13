@@ -6,3 +6,9 @@ yarn-error.log
 
 # webpack assets
 .webpack
+
+# environment
+**/.env
+
+# idea
+.idea/**

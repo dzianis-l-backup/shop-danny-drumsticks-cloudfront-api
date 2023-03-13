@@ -5,9 +5,33 @@ export type Stick = {
     description: string
 }
 
+export type StickStock = Stick & { count: Stock["count"] }
+export type SticksStocks = StickStock[]
+
+export type Stock = {
+    product_id: string
+    count: number
+}
+
 export type Sticks = Stick[]
 
 export type ErrorNotFound = {
     message: string
-    statusCode: 404
+    statusCode: HttpStatuses.NOT_FOUND
+}
+
+export enum HttpStatuses {
+    OK = 200,
+    CREATED = 201,
+    NOT_FOUND = 404,
+    BAD_REQUEST = 400,
+    INTERNAL_SERVER_ERROR = 500,
+}
+
+export interface StatusCode {
+    statusCode: HttpStatuses
+}
+
+export interface ControllerResponse<T> extends StatusCode {
+    payload: T | undefined
 }

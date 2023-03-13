@@ -1,15 +1,20 @@
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin")
 const path = require("path")
 const slsw = require("serverless-webpack")
+const TerserPlugin = require("terser-webpack-plugin")
 
 module.exports = (async () => {
-    // const accountId = await slsw.lib.serverless.providers.aws.getAccountId()
-    const webpack = await slsw.webpack
-    console.log(webpack)
-
     return {
-        entry: slsw.lib.entries,
         mode: slsw.lib.webpack.isLocal ? "development" : "production",
+        devtool: slsw.lib.webpack.isLocal
+            ? "inline-cheap-source-map"
+            : undefined,
+        entry: slsw.lib.entries,
+        output: {
+            libraryTarget: "commonjs",
+            path: path.join(__dirname, ".webpack"),
+            filename: "[name].js",
+        },
         target: "node",
         module: {
             rules: [
@@ -30,6 +35,13 @@ module.exports = (async () => {
             extensions: [".ts", ".js"],
             plugins: [
                 new TsconfigPathsPlugin({ configFile: "tsconfig.paths.json" }),
+            ],
+        },
+        optimization: {
+            minimizer: [
+                new TerserPlugin({
+                    extractComments: false,
+                }),
             ],
         },
     }

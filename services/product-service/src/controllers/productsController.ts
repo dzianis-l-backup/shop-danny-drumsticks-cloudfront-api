@@ -1,27 +1,22 @@
-import { Stick, ErrorNotFound } from "../types"
-import { getSticksMock } from "@mocks/products"
+import { Stick, StickStock, ControllerResponse } from "../types"
+import { productsDaoFactoryMethod } from "../dao/productsDaoFactoryMethod"
+
+const dao = productsDaoFactoryMethod("mysql")
 
 export abstract class ProductsController {
-    static async getProductsList(): Promise<Stick[]> {
-        return getSticksMock()
+    static async getProductsList(): Promise<ControllerResponse<Stick[]>> {
+        return dao.getProductsList()
     }
 
     static async getProductsById(
         id: string
-    ): Promise<[Stick | undefined, ErrorNotFound | undefined]> {
-        const stick =
-            (await getSticksMock()).find((stick) => stick.id === id) || null
+    ): Promise<ControllerResponse<StickStock>> {
+        return dao.getProductsById(id)
+    }
 
-        if (!stick) {
-            return [
-                null,
-                {
-                    message: `Product with id ${id} not found`,
-                    statusCode: 404,
-                },
-            ]
-        }
-
-        return [stick, undefined]
+    static async createProduct(
+        stickRaw: Omit<StickStock, "id"> & Partial<Pick<Stick, "id">>
+    ): Promise<ControllerResponse<Stick>> {
+        return dao.createProduct(stickRaw)
     }
 }

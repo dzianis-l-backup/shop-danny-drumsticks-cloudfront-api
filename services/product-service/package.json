@@ -6,26 +6,34 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "deploy": "sls deploy",
-        "aws:identity": "aws sts get-caller-identity"
+        "aws:identity": "aws sts get-caller-identity",
+        "lint": "tsc --noEmit"
     },
     "engines": {
         "node": ">=14.15.0"
     },
     "dependencies": {
         "@middy/core": "^3.4.0",
-        "@middy/http-json-body-parser": "^3.4.0"
+        "@middy/http-json-body-parser": "^3.4.0",
+        "mysql2": "^3.2.0",
+        "uuid": "^9.0.0",
+        "yup": "^1.0.2"
     },
     "devDependencies": {
         "@serverless/typescript": "^3.0.0",
         "@types/aws-lambda": "^8.10.71",
+        "@types/mysql": "^2.15.21",
         "@types/node": "^14.14.25",
+        "@types/uuid": "^9.0.1",
+        "dotenv": "^16.0.3",
         "esbuild": "^0.14.11",
         "json-schema-to-ts": "^1.5.0",
         "serverless": "^3.0.0",
         "serverless-esbuild": "^1.23.3",
         "serverless-webpack": "^5.11.0",
+        "terser-webpack-plugin": "^5.3.6",
         "ts-loader": "^9.4.2",
-        "ts-node": "^10.4.0",
+        "ts-node": "^10.9.1",
         "tsconfig-paths": "^3.9.0",
         "tsconfig-paths-webpack-plugin": "^4.0.0",
         "typescript": "^4.1.3",

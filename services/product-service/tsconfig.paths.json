@@ -13,6 +13,12 @@
       ],
       "@controllers/*": [
         "src/controllers/*"
+      ],
+      "@constants/*": [
+        "src/constants/*"
+      ],
+      "@validation/*": [
+        "src/validation/*"
       ]
     }
   }

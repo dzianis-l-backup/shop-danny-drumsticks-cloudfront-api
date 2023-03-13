@@ -1,0 +1,6 @@
+{
+    "body": "{\"id\":\"aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\"title\":\"leonty\",\"description\":\"BLR sticks\",\"price\":4,\"count\": 20}",
+    "headers": {
+        "Content-Type": "application/json"
+    }
+}
