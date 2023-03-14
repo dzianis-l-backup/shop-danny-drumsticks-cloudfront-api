@@ -4,9 +4,9 @@ import AWS from "aws-sdk"
 import csv from "csv-parser"
 
 export const importFileParser = async (event) => {
-    try {
-        const s3 = new AWS.S3({ region: process.env.REGION })
+    const s3 = new AWS.S3({ region: process.env.REGION })
 
+    try {
         for (const record of event.Records) {
             logger.log("incomming record", record)
 
