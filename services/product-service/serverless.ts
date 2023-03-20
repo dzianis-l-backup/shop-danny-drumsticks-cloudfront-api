@@ -17,7 +17,7 @@ const serverlessConfiguration: AWS = {
         name: "aws",
         runtime: "nodejs14.x",
         stage: "dev",
-        region: process.env.REGION as 'eu-west-1',
+        region: process.env.REGION as AWS["provider"]["region"],
         profile: "danny",
         apiGateway: {
             minimumCompressionSize: 1024,
@@ -34,6 +34,7 @@ const serverlessConfiguration: AWS = {
             MY_SQL_HOST: process.env.MY_SQL_HOST,
             MY_SQL_POST: process.env.MY_SQL_POST,
             MY_SQL_DATABASE: process.env.MY_SQL_DATABASE,
+            SQS_QUEUE_NAME: process.env.SQS_QUEUE_NAME,
         },
         iam: {
             role: {
@@ -44,13 +45,20 @@ const serverlessConfiguration: AWS = {
             },
         },
     },
-    // import the function via paths
     functions: {
         getProductsList,
         getProductsById,
         createProduct,
     },
     package: { individually: true },
+    resources: {
+        Resources: {
+            SQSQueue: {
+                Type: "AWS::SQS::Queue",
+                Properties: { QueueName: process.env.SQS_QUEUE_NAME },
+            },
+        },
+    },
     custom: {
         esbuild: {
             bundle: true,

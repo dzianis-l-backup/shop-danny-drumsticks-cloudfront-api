@@ -5,11 +5,10 @@ import csv from "csv-parser"
 
 export const importFileParser = async (event) => {
     const s3 = new AWS.S3({ region: process.env.REGION })
+    const sqs = new AWS.SQS({ region: process.env.REGION })
 
     try {
         for (const record of event.Records) {
-            logger.log("incomming record", record)
-
             await new Promise((resolve) => {
                 s3.getObject({
                     Bucket: process.env.BUCKET_CSV,
@@ -17,7 +16,12 @@ export const importFileParser = async (event) => {
                 })
                     .createReadStream()
                     .pipe(csv())
-                    .on("data", (data) => logger.log(data))
+                    .on("data", (data) => {
+                        sqs.sendMessage({
+                            QueueUrl: process.env.SQS_QUEUE_NAME,
+                            MessageBody: data,
+                        })
+                    })
                     .on("end", async () => {
                         const source = `${process.env.BUCKET_CSV}/${record.s3.object.key}`
                         const distKey = record.s3.object.key.replace(
