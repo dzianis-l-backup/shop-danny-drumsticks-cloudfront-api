@@ -15,12 +15,21 @@ module.exports = (async () => {
             path: path.join(__dirname, ".webpack"),
             filename: "[name].js",
         },
+
         target: "node",
         module: {
             rules: [
                 {
                     test: /.tsx?$/,
-                    use: "ts-loader",
+                    use: [
+                        {
+                            loader: "ts-loader",
+                            options: {
+                                transpileOnly: true,
+                            },
+                        },
+                    ],
+
                     exclude: [
                         [
                             path.resolve(__dirname, "node_modules"),

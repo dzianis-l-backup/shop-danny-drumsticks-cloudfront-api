@@ -148,4 +148,8 @@ export abstract class ProductsDaoMysql {
             return getControllerResponseInternalServerError()
         }
     }
+
+    static async createBatchProduct(): Promise<ControllerResponse<Stick>[]> {
+        throw new Error("not implemented")
+    }
 }

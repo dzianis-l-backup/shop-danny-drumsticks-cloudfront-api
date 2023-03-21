@@ -4,11 +4,11 @@ import type {
     Handler,
 } from "aws-lambda"
 import type { FromSchema } from "json-schema-to-ts"
-import { HttpStatuses } from "../types"
+import { HttpStatuses, HttpStatusesSuccess } from "../types"
 
 const HttpStatusesMessages = {
-    [HttpStatuses.NOT_FOUND]: "Not Found",
     [HttpStatuses.OK]: "OK",
+    [HttpStatuses.NOT_FOUND]: "Not Found",
     [HttpStatuses.CREATED]: "Created",
     [HttpStatuses.BAD_REQUEST]: "Bad Request",
     [HttpStatuses.INTERNAL_SERVER_ERROR]: "Oops guess someone is gonna be fired",
@@ -28,15 +28,14 @@ const CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
 }
 
-const HTTP_STATUSES_SUCCESS = [HttpStatuses.OK, HttpStatuses.CREATED]
 
 export const formatJSONResponse = <T>(response: {
     payload?: Record<string, unknown> | Record<string, unknown>[] | T | null
-    statusCode?: HttpStatuses
+    statusCode: HttpStatuses
 }) => {
     const { payload, statusCode } = response
 
-    if (!HTTP_STATUSES_SUCCESS.includes(statusCode)) {
+    if (!(Object.values(HttpStatusesSuccess) as number[]).includes(statusCode)) {
         const error = {
             message: HttpStatusesMessages[statusCode],
         }

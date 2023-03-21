@@ -7,7 +7,7 @@ export default {
             sqs: {
                 batchSize: 5,
                 arn: {
-                    "Fn::GetAttr": ['SQSQueue', 'Arn'],
+                    "Fn::GetAtt": ["SQSQueue", "Arn"],
                 },
             },
         },

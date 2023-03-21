@@ -2,8 +2,8 @@ import path from "path"
 import { fileURLToPath } from "url"
 import dotenv from "dotenv"
 import AWS from "aws-sdk"
-import Products from "../mocks/productsMock.json" assert { type: "json" }
-import Stocks from "../mocks/stocksMock.json" assert { type: "json" }
+// import Products from "../mocks/productsMock.json" assert { type: "json" }
+// import Stocks from "../mocks/stocksMock.json" assert { type: "json" }
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

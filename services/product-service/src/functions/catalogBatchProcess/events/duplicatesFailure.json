@@ -1,0 +1,10 @@
+{
+    "Records": [
+        {
+            "body": "{\"id\":\"aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\"title\":\"vicfirth5a\",\"description\":\"Vic Firth 5A American Classic Hickory\",\"price\":2,\"count\":2}"
+        },
+        {
+            "body": "{\"id\":\"aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\"title\":\"promark5b\",\"description\":\"The 5B is a standard diameter drumstick for the heavy hitter\",\"price\":3,\"count\":3}"
+        }
+    ]
+}

@@ -54,17 +54,8 @@ const serverlessConfiguration: AWS = {
         ],
     },
 
-    // import the function via paths
     functions: { importProductsFile, importFileParser },
     package: { individually: true },
-    // resources: {
-    //     Resources: {
-    //         SQSQueue: {
-    //             Type: "AWS::SQS::Queue",
-    //             Properties: { QueueName: process.env.SQS_QUEUE_NAME },
-    //         },
-    //     },
-    // },
     custom: {
         esbuild: {
             bundle: true,

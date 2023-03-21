@@ -4,8 +4,9 @@ import {
     StickStock,
     HttpStatuses,
     ControllerResponse,
+    StickStockRaw,
 } from "../types"
-import AWS from "aws-sdk"
+import {DynamoDB} from "aws-sdk"
 import { v4 as uuid4 } from "uuid"
 import { createProductSchema } from "@validation/createProduct"
 import { logger } from "@libs/logger"
@@ -13,9 +14,10 @@ import { ProductsDao } from "./productsDao"
 
 let dynamodb: AWS.DynamoDB.DocumentClient
 export abstract class ProductsDaoDynamoDb extends ProductsDao {
-
     static init(): void {
-        dynamodb = new AWS.DynamoDB.DocumentClient({ region: process.env.REGION })
+        dynamodb = new DynamoDB.DocumentClient({
+            region: process.env.REGION,
+        })
     }
     static async getProductsList(): Promise<ControllerResponse<Stick[]>> {
         const productsResults = await dynamodb
@@ -101,40 +103,64 @@ export abstract class ProductsDaoDynamoDb extends ProductsDao {
             }
         }
 
-        const result = await dynamodb
-            .transactWrite({
-                TransactItems: [
-                    {
-                        Put: {
-                            TableName: process.env.TABLE_PRODUCTS,
-                            Item: stick,
-                            ConditionExpression: "attribute_not_exists(id)",
+        try {
+            const result = await dynamodb
+                .transactWrite({
+                    TransactItems: [
+                        {
+                            Put: {
+                                TableName: process.env.TABLE_PRODUCTS,
+                                Item: stick,
+                                ConditionExpression: "attribute_not_exists(id)",
+                            },
                         },
-                    },
-                    {
-                        Put: {
-                            TableName: process.env.TABLE_STOCKS,
-                            Item: stock,
-                            ConditionExpression:
-                                "attribute_not_exists(product_id)",
+                        {
+                            Put: {
+                                TableName: process.env.TABLE_STOCKS,
+                                Item: stock,
+                                ConditionExpression:
+                                    "attribute_not_exists(product_id)",
+                            },
                         },
-                    },
-                ],
-            })
-            .promise()
-            .then(() => {
-                return { statusCode: HttpStatuses.CREATED }
-            })
-            .catch((error) => {
-                logger.error(error)
+                    ],
+                })
+                .promise()
+                .then(() => {
+                    return { statusCode: HttpStatuses.CREATED }
+                })
+                .catch((error) => {
+                    logger.error(error)
 
-                return { statusCode: HttpStatuses.BAD_REQUEST }
-            })
+                    return { statusCode: HttpStatuses.BAD_REQUEST }
+                })
 
-        return {
-            payload:
-                result.statusCode === HttpStatuses.CREATED ? stick : undefined,
-            statusCode: result.statusCode,
+            return {
+                payload:
+                    result.statusCode === HttpStatuses.CREATED
+                        ? stick
+                        : undefined,
+                statusCode: result.statusCode,
+            }
+        } catch (error) {
+            logger.error(error)
+
+            return { statusCode: HttpStatuses.BAD_REQUEST, payload: undefined }
         }
+    }
+
+    static async createBatchProduct(
+        sticksStocksRaw: StickStockRaw[]
+    ): Promise<ControllerResponse<Stick>[]> {
+        let controllerResponse: ControllerResponse<Stick>[] = []
+
+        for (const stickStockRaw of sticksStocksRaw) {
+            const response = await ProductsDaoDynamoDb.createProduct(
+                stickStockRaw
+            )
+
+            controllerResponse.push(response)
+        }
+
+        return controllerResponse
     }
 }
