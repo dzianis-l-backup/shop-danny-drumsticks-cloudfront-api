@@ -31,9 +31,6 @@ const serverlessConfiguration: AWS = {
             BUCKET_CSV_SOURCE: process.env.BUCKET_CSV_SOURCE,
             BUCKET_CSV_DIST: process.env.BUCKET_CSV_DIST,
             SQS_QUEUE_NAME: process.env.SQS_QUEUE_NAME,
-            // SQS_QUEUE_URL: {
-            //     Ref: "SQSQueue",
-            // },
         },
         iamRoleStatements: [
             {
