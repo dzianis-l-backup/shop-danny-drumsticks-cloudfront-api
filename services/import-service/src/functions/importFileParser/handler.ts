@@ -48,7 +48,7 @@ export const importFileParser = async (event) => {
                                 },
                                 (err, data) => {
                                     if (err) {
-                                        console.log(err)
+                                        logger.log(err)
                                     }
                                     logger.log("after: sqs.sendMessage", data)
 

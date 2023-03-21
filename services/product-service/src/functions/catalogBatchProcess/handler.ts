@@ -39,9 +39,8 @@ export const catalogBatchProcess = async (
         payload: response,
     }
 
-    console.log("topic arn", process.env.SNS_TOPIC_CREATE_BATCH_PROCESS_ARN)
-
     try {
+        debugger
         await sns
             .publish({
                 Subject: "Hey, here is the outcome to batch catalog creation",
@@ -52,6 +51,7 @@ export const catalogBatchProcess = async (
 
         return result
     } catch (error) {
+        logger.error(error)
         return { statusCode: HttpStatuses.INTERNAL_SERVER_ERROR }
     }
 }

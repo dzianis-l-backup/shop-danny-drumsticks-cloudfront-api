@@ -20,12 +20,8 @@ export const importProductsFile = async (event) => {
         }
         const url = await s3.getSignedUrlPromise("putObject", params)
 
-        console.log(`λ importProductsFile url`, url)
-
         return formatJSONResponse({ statusCode: HttpStatuses.Ok, payload: url })
     } catch (error) {
-        console.log(error)
-
         return formatJSONResponse({
             statusCode: HttpStatuses.InternalServerError,
         })
