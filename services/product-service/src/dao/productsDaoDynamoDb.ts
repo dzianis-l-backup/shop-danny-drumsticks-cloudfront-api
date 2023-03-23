@@ -4,13 +4,33 @@ import {
     StickStock,
     HttpStatuses,
     ControllerResponse,
+    HttpStatusesSuccess,
     StickStockRaw,
 } from "../types"
-import {DynamoDB} from "aws-sdk"
+import { DynamoDB } from "aws-sdk"
 import { v4 as uuid4 } from "uuid"
 import { createProductSchema } from "@validation/createProduct"
 import { logger } from "@libs/logger"
 import { ProductsDao } from "./productsDao"
+
+const getStickAndStock = (
+    stickStockRaw: StickStockRaw | StickStock
+): [Stick, Stock] => {
+    let id: Stick["id"] = uuid4()
+
+    if ("id" in stickStockRaw) {
+        id = stickStockRaw.id
+    }
+
+    const stickStock = {
+        ...stickStockRaw,
+        id,
+    } as StickStock
+    const { count, ...stick } = stickStock
+    const stock = { count, product_id: stick.id }
+
+    return [stick, stock]
+}
 
 let dynamodb: AWS.DynamoDB.DocumentClient
 export abstract class ProductsDaoDynamoDb extends ProductsDao {
@@ -150,17 +170,71 @@ export abstract class ProductsDaoDynamoDb extends ProductsDao {
 
     static async createBatchProduct(
         sticksStocksRaw: StickStockRaw[]
-    ): Promise<ControllerResponse<Stick>[]> {
-        let controllerResponse: ControllerResponse<Stick>[] = []
-
+    ): Promise<ControllerResponse<ControllerResponse<[Stick, Stock]>[]>> {
+        const sticksRequests = []
+        const stocksRequests = []
+        const responses = []
         for (const stickStockRaw of sticksStocksRaw) {
-            const response = await ProductsDaoDynamoDb.createProduct(
-                stickStockRaw
-            )
+            const [stick, stock] = getStickAndStock(stickStockRaw)
 
-            controllerResponse.push(response)
+            sticksRequests.push({
+                PutRequest: {
+                    Item: {
+                        ...stick,
+                    },
+                },
+            })
+
+            let paramsSticks = {
+                RequestItems: {
+                    [process.env.TABLE_PRODUCTS]: sticksRequests,
+                },
+            }
+
+            stocksRequests.push({
+                PutRequest: {
+                    Item: {
+                        ...stock,
+                    },
+                },
+            })
+
+            let paramsStocks = {
+                RequestItems: {
+                    [process.env.TABLE_STOCKS]: stocksRequests,
+                },
+            }
+
+            try {
+                await dynamodb.batchWrite(paramsSticks).promise()
+                await dynamodb.batchWrite(paramsStocks).promise()
+
+                responses.push({
+                    statusCode: HttpStatuses.CREATED,
+                    payload: [stick, stock] as [Stick, Stock],
+                })
+            } catch (error) {
+                if (error) {
+                    logger.error("createBatchProduct", error)
+                }
+
+                responses.push({
+                    statusCode: HttpStatuses.BAD_REQUEST,
+                    payload: undefined,
+                })
+            }
         }
 
-        return controllerResponse
+        return {
+            statusCode: responses.every((response) =>
+                (Object.values(HttpStatusesSuccess) as number[]).includes(
+                    response.statusCode
+                )
+            )
+                ? HttpStatuses.CREATED
+                : HttpStatuses.BAD_REQUEST,
+
+            payload: responses,
+        } as ControllerResponse<ControllerResponse<[Stick, Stock]>[]>
     }
 }

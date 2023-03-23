@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`product-service catalogBatchProcess should process batch requests 1`] = `
+{
+  "payload": [
+    {
+      "payload": [
+        {
+          "description": "Vic Firth 5A American Classic Hickory",
+          "id": "4b66b712-49f5-4799-9627-fa764e556b01",
+          "price": 1,
+          "title": "vicfirth5a",
+        },
+        {
+          "count": 1,
+          "product_id": "4b66b712-49f5-4799-9627-fa764e556b01",
+        },
+      ],
+      "statusCode": 201,
+    },
+    {
+      "payload": [
+        {
+          "description": "The 5B is a standard diameter drumstick for the heavy hitter",
+          "id": "d0cdf473-d872-4c78-9263-1a1a055fed5d",
+          "price": 1,
+          "title": "promark5b",
+        },
+        {
+          "count": 1,
+          "product_id": "d0cdf473-d872-4c78-9263-1a1a055fed5d",
+        },
+      ],
+      "statusCode": 201,
+    },
+  ],
+  "statusCode": 201,
+}
+`;

@@ -111,6 +111,13 @@ const DynamoDB = {
                 promise: jest.fn(promisify),
             }
         }),
+        batchWrite: jest.fn((...args) => {
+            log("batchWrite", ...args)
+
+            return {
+                promise: jest.fn(promisify),
+            }
+        }),
     })),
 }
 

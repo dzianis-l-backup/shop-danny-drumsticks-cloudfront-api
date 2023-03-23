@@ -1,4 +1,10 @@
-import { Stick, StickStock, HttpStatuses, ControllerResponse } from "../types"
+import {
+    Stick,
+    StickStock,
+    HttpStatuses,
+    ControllerResponse,
+    Stock,
+} from "../types"
 import { v4 as uuid4 } from "uuid"
 import { logger } from "@libs/logger"
 import mysql2 from "mysql2/promise"
@@ -149,7 +155,9 @@ export abstract class ProductsDaoMysql {
         }
     }
 
-    static async createBatchProduct(): Promise<ControllerResponse<Stick>[]> {
+    static async createBatchProduct(): Promise<
+        ControllerResponse<ControllerResponse<[Stick, Stock]>[]>
+    > {
         throw new Error("not implemented")
     }
 }

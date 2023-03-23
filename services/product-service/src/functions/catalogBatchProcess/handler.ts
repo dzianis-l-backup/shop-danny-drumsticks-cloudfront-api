@@ -2,7 +2,13 @@ import { SQSEvent, Context } from "aws-lambda"
 import { SNS } from "aws-sdk"
 
 import { logger } from "@libs/logger"
-import { HttpStatuses, HttpStatusesSuccess, StickStockRaw } from "src/types"
+import {
+    ControllerResponse,
+    HttpStatuses,
+    Stick,
+    StickStockRaw,
+    Stock,
+} from "src/types"
 import { ProductsController } from "@controllers/productsController"
 
 const refineRecordBody = (record: any) => {
@@ -25,30 +31,19 @@ export const catalogBatchProcess = async (
 
     const sns = new SNS({ region: process.env.REGION })
     const records = event.Records.map(refineRecordBody)
-    const response = await ProductsController.catalogBatchProcess(
-        records as StickStockRaw[]
-    )
-    const successStatuses = Object.values(HttpStatusesSuccess) as number[]
-    const responseFailure = response.find(
-        (response) => !successStatuses.includes(response.statusCode)
-    )
-    const result = {
-        statusCode: responseFailure
-            ? responseFailure.statusCode
-            : response[0].statusCode,
-        payload: response,
-    }
+    const response: ControllerResponse<ControllerResponse<[Stick, Stock]>[]> =
+        await ProductsController.catalogBatchProcess(records as StickStockRaw[])
 
     try {
         await sns
             .publish({
                 Subject: "Hey, here is the outcome to batch catalog creation",
-                Message: JSON.stringify(result),
+                Message: JSON.stringify(response),
                 TopicArn: process.env.SNS_TOPIC_CREATE_BATCH_PROCESS_ARN,
             })
             .promise()
 
-        return result
+        return response
     } catch (error) {
         logger.error(error)
         return { statusCode: HttpStatuses.INTERNAL_SERVER_ERROR }

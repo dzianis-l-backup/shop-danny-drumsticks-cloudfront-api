@@ -1,9 +1,4 @@
-import {
-    ControllerResponse,
-    StickStock,
-    Stick,
-    StickStockRaw,
-} from "../types/index"
+import { ControllerResponse, StickStock, Stick, Stock } from "../types/index"
 
 export abstract class ProductsDao {
     init: () => void
@@ -12,7 +7,7 @@ export abstract class ProductsDao {
     createProduct: <T extends StickStock>(
         stickRaw: Omit<T, T["id"]> & Partial<Pick<Stick, "id">>
     ) => Promise<ControllerResponse<T>>
-    catalogBatchProcess: <T extends StickStockRaw>() => Promise<
-        ControllerResponse<T>[]
+    catalogBatchProcess: <T extends Stick, U extends Stock>() => Promise<
+        ControllerResponse<ControllerResponse<[T, U]>[]>
     >
 }

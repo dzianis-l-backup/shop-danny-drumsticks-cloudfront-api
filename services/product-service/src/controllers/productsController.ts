@@ -1,4 +1,4 @@
-import { Stick, StickStock, ControllerResponse, StickStockRaw } from "../types"
+import { Stick, StickStock, ControllerResponse, StickStockRaw, Stock } from "../types"
 import { productsDaoFactoryMethod } from "../dao/productsDaoFactoryMethod"
 
 const dao = productsDaoFactoryMethod("dynamodb")
@@ -20,7 +20,7 @@ export abstract class ProductsController {
         return dao.createProduct(stickRaw)
     }
 
-    static async catalogBatchProcess(sticksStocksRaw: StickStockRaw[]) {
+    static async catalogBatchProcess(sticksStocksRaw: StickStockRaw[]): Promise<ControllerResponse<ControllerResponse<[Stick, Stock]>[]>> {
         return dao.createBatchProduct(sticksStocksRaw)
     }
 }

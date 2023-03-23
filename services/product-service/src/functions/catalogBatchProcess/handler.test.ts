@@ -1,8 +1,6 @@
 import { SQSRecord, Context } from "aws-lambda"
 import { catalogBatchProcess } from "./handler"
 
-import { HttpStatuses } from "src/types"
-
 describe("product-service", () => {
     describe("catalogBatchProcess", () => {
         let topicArn: string
@@ -37,11 +35,7 @@ describe("product-service", () => {
                 {} as Context
             )
 
-            expect(result).toEqual(
-                expect.objectContaining({
-                    statusCode: 201,
-                })
-            )
+            expect(result).toMatchSnapshot()
         })
     })
 })
