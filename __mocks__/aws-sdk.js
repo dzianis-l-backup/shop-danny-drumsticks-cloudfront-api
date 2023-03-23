@@ -1,16 +1,68 @@
 const products = require("../services/product-service/src/mocks/productsMock.json")
 const stocks = require("../services/product-service/src/mocks/stocksMock.json")
+const fs = require("fs")
 
 const promisify = (data) => Promise.resolve(data)
+const log = (...args) => console.log("unit-test logs: ", ...args)
 
-const S3 = jest.fn(() => {
+const SQS = jest.fn(() => {
+    const MOCK_QUEUE_URL = "MOCK_QUEUE_URL"
+
     return {
-        getSignedUrlPromise: jest.fn((command, params) => {
-            debugger
-            return promisify(command + params.Bucket + params.Key)
+        getQueueUrl: jest.fn((_, callback) => {
+            callback(null, { QueueUrl: MOCK_QUEUE_URL })
+        }),
+
+        sendMessage: jest.fn((_, callback) => {
+            callback(null, null)
         }),
     }
 })
+
+const SNS = jest.fn(() => {
+    return {
+        publish: jest.fn((...args) => {
+            log("publish", ...args)
+
+            return { promise: jest.fn(promisify) }
+        }),
+    }
+})
+
+const S3 = (() => {
+    const FILE_NAME = "myFile.csv"
+    const FILE_PATH = __dirname + "/" + FILE_NAME
+
+    const instance = {
+        getSignedUrlPromise: jest.fn((command, params) => {
+            return promisify(command + params.Bucket + params.Key)
+        }),
+
+        getObject: jest.fn(() => {
+            return {
+                createReadStream: jest.fn(() => {
+                    return fs.createReadStream(FILE_PATH)
+                }),
+            }
+        }),
+
+        copyObject: jest.fn(() => {
+            return {
+                promise: jest.fn(promisify),
+            }
+        }),
+
+        deleteObject: jest.fn(() => {
+            return {
+                promise: jest.fn(promisify),
+            }
+        }),
+    }
+
+    return jest.fn(() => {
+        return instance
+    })
+})()
 
 const DynamoDB = {
     DocumentClient: jest.fn(() => ({
@@ -52,9 +104,11 @@ const DynamoDB = {
                 }),
             })
         ),
-        transactWrite: jest.fn(() => {
+        transactWrite: jest.fn((...args) => {
+            log("transactWrite", ...args)
+
             return {
-                promise: jest.fn(() => {}),
+                promise: jest.fn(promisify),
             }
         }),
     })),
@@ -63,4 +117,6 @@ const DynamoDB = {
 module.exports = {
     DynamoDB,
     S3,
+    SQS,
+    SNS,
 }

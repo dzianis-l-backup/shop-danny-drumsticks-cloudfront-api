@@ -40,7 +40,6 @@ export const catalogBatchProcess = async (
     }
 
     try {
-        debugger
         await sns
             .publish({
                 Subject: "Hey, here is the outcome to batch catalog creation",
