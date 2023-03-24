@@ -33,8 +33,8 @@ This is a monorepo for AWS API provisioning for the Danny drumsticks store
 PR
 
 ## Additional tasks
-- +15 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` - catalogBatchProcess lambda is covered by unit tests
-- +15 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` - set a Filter Policy for SNS createProductTopic in serverless.yml and create an additional email subscription to distribute messages to different emails depending on the filter for any product attribute
+- +15 ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done`  - catalogBatchProcess lambda is covered by unit tests
+- +15 ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done`  - set a Filter Policy for SNS createProductTopic in serverless.yml and create an additional email subscription to distribute messages to different emails depending on the filter for any product attribute
 
 # Task 5
 ## Task 5.1
