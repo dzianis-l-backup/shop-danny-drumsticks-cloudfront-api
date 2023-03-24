@@ -42,3 +42,8 @@ export interface ControllerResponse<T> extends StatusCode {
 }
 
 export type StickStockRaw = Omit<StickStock, "id">
+
+export enum BroadCasts {
+    Private = "Private",
+    Business = "Business",
+}

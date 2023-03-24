@@ -8,6 +8,7 @@ import {
     Stick,
     StickStockRaw,
     Stock,
+    BroadCasts,
 } from "src/types"
 import { ProductsController } from "@controllers/productsController"
 
@@ -21,6 +22,8 @@ const refineRecordBody = (record: any) => {
         count: Number(body.count),
     }
 }
+
+const priceThreshold = 1
 
 export const catalogBatchProcess = async (
     event: SQSEvent,
@@ -39,9 +42,33 @@ export const catalogBatchProcess = async (
             .publish({
                 Subject: "Hey, here is the outcome to batch catalog creation",
                 Message: JSON.stringify(response),
+                MessageAttributes: {
+                    broadcast: {
+                        DataType: "String",
+                        StringValue: BroadCasts.Business,
+                    },
+                },
                 TopicArn: process.env.SNS_TOPIC_CREATE_BATCH_PROCESS_ARN,
             })
             .promise()
+
+        if (
+            response.payload.some((p) => p.payload[0]?.price <= priceThreshold)
+        ) {
+            await sns
+                .publish({
+                    Subject: "Hey, there are some cheap sticks, hurry to buy",
+                    Message: JSON.stringify(response),
+                    MessageAttributes: {
+                        broadcast: {
+                            DataType: "String",
+                            StringValue: BroadCasts.Private,
+                        },
+                    },
+                    TopicArn: process.env.SNS_TOPIC_CREATE_BATCH_PROCESS_ARN,
+                })
+                .promise()
+        }
 
         return response
     } catch (error) {

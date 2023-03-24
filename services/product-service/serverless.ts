@@ -9,6 +9,7 @@ import getProductsList from "@functions/getProductsList"
 import getProductsById from "@functions/getProductsById"
 import createProduct from "@functions/createProduct"
 import catalogBatchProcess from "@functions/catalogBatchProcess"
+import { BroadCasts } from "./src/types"
 
 const serverlessConfiguration: AWS = {
     service: "product-service",
@@ -84,6 +85,24 @@ const serverlessConfiguration: AWS = {
                 Properties: {
                     Endpoint: process.env.EMAIL_BUSINESS,
                     Protocol: "email",
+                    FilterPolicyScope: "MessageAttributes",
+                    FilterPolicy: {
+                        broadcast: [BroadCasts.Business],
+                    },
+                    TopicArn: {
+                        Ref: "SNSTopic",
+                    },
+                },
+            },
+            SNSSubscriptionPrivate: {
+                Type: "AWS::SNS::Subscription",
+                Properties: {
+                    Endpoint: process.env.EMAIL_PRIVATE,
+                    Protocol: "email",
+                    FilterPolicyScope: "MessageAttributes",
+                    FilterPolicy: {
+                        broadcast: [BroadCasts.Private],
+                    },
                     TopicArn: {
                         Ref: "SNSTopic",
                     },

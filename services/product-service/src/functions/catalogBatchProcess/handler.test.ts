@@ -18,8 +18,8 @@ describe("product-service", () => {
 
         it("should process batch requests", async () => {
             const products = [
-                '{"title":"vicfirth5a","description":"Vic Firth 5A American Classic Hickory","price":1,"count":1}',
-                '{"title":"promark5b","description":"The 5B is a standard diameter drumstick for the heavy hitter","price":1,"count":1}',
+                '{"id":"aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa","title":"vicfirth5a","description":"Vic Firth 5A American Classic Hickory","price":1,"count":1}',
+                '{"id":"bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb","title":"promark5b","description":"The 5B is a standard diameter drumstick for the heavy hitter","price":1,"count":1}',
             ]
             const result = await catalogBatchProcess(
                 {
