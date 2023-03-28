@@ -17,7 +17,7 @@ const validateCredentials = (username: string, password: string) => {
 }
 
 const getPolicy = (
-    principalId: string,
+    principalId: string = '',
     effect: Effect,
     resource: string,
     statusCode,
@@ -43,7 +43,7 @@ const getPolicy = (
     }
 }
 
-const processToken = (authorizationHeader: string) => {
+const processToken = (authorizationHeader?: string) => {
     const responseUnauthorized = {
         Effect: Effect.Deny,
         statusCode: HttpStatuses.Unauthorized,

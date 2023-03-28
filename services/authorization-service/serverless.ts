@@ -1,5 +1,6 @@
 import type { AWS } from "@serverless/typescript"
 import basicAuthorizer from "@functions/basicAuthorizer"
+
 import { join } from "path"
 import { config } from "dotenv"
 
