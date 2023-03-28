@@ -12,6 +12,28 @@ This is a monorepo for AWS API provisioning for the Danny drumsticks store
 -   [swagger-ui](https://eqkv6cw9rf.execute-api.eu-west-1.amazonaws.com/swagger)
 -   [/import](https://mil2oe0tfc.execute-api.eu-west-1.amazonaws.com/dev)
 
+# Task 7
+
+## Task 7.1
+- `authorization-service` creation
+- `λ basicAuthorizer`
+- specify .env authentication parameters
+- Basic auth flow
+- 401 - for header absence, 403 - for improper authentication details
+## Task 7.2
+- `/import` updated with Gateway authorizer
+- `basicAuthorizer` is used as an authorizer
+
+## Taks 7.3
+- FE application sends the authorization token
+- the token is taken from the local storage
+
+## Task 7.4
+PR
+
+## Additional tasks
+- +30 ![#ffff00](https://placehold.co/15x15/ffff00/ffff00.png) `in progress` - statuses 401 and 403 for the FE part
+
 # Task 6
 
 ## Task 6.1
