@@ -7,13 +7,13 @@ exports[`product-service catalogBatchProcess should process batch requests 1`] =
       "payload": [
         {
           "description": "Vic Firth 5A American Classic Hickory",
-          "id": "534f1263-bd2d-4f89-aa93-0ad9d24442c6",
+          "id": "aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
           "price": 1,
           "title": "vicfirth5a",
         },
         {
           "count": 1,
-          "product_id": "534f1263-bd2d-4f89-aa93-0ad9d24442c6",
+          "product_id": "aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
         },
       ],
       "statusCode": 201,
@@ -22,13 +22,13 @@ exports[`product-service catalogBatchProcess should process batch requests 1`] =
       "payload": [
         {
           "description": "The 5B is a standard diameter drumstick for the heavy hitter",
-          "id": "f2e8f5c7-bcfc-4cc3-ad0d-24160814c790",
+          "id": "bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
           "price": 1,
           "title": "promark5b",
         },
         {
           "count": 1,
-          "product_id": "f2e8f5c7-bcfc-4cc3-ad0d-24160814c790",
+          "product_id": "bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
         },
       ],
       "statusCode": 201,
