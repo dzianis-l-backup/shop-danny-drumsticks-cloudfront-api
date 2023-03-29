@@ -1,11 +1,11 @@
 import { formatJSONResponse } from "@libs/api-gateway"
 import { HttpStatuses } from "@const/index"
-import AWS from "aws-sdk"
+import { S3 } from "aws-sdk"
 
 export const importProductsFile = async (event) => {
     try {
         const { name: fileName } = event.queryStringParameters || {}
-        const s3 = new AWS.S3({ region: process.env.REGION })
+        const s3 = new S3({ region: process.env.REGION })
 
         if (!fileName) {
             return formatJSONResponse({ statusCode: HttpStatuses.BadRequest })
@@ -20,12 +20,8 @@ export const importProductsFile = async (event) => {
         }
         const url = await s3.getSignedUrlPromise("putObject", params)
 
-        console.log(`λ importProductsFile url`, url)
-
         return formatJSONResponse({ statusCode: HttpStatuses.Ok, payload: url })
     } catch (error) {
-        console.log(error)
-
         return formatJSONResponse({
             statusCode: HttpStatuses.InternalServerError,
         })

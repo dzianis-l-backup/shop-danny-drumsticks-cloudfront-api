@@ -30,6 +30,7 @@ const serverlessConfiguration: AWS = {
             BUCKET_CSV: process.env.BUCKET_CSV,
             BUCKET_CSV_SOURCE: process.env.BUCKET_CSV_SOURCE,
             BUCKET_CSV_DIST: process.env.BUCKET_CSV_DIST,
+            SQS_QUEUE_NAME: process.env.SQS_QUEUE_NAME,
         },
         iamRoleStatements: [
             {
@@ -42,10 +43,14 @@ const serverlessConfiguration: AWS = {
                 Action: ["s3:*"],
                 Resource: ["arn:aws:s3:::shop-danny-csv-bucket/*"],
             },
+            {
+                Effect: "Allow",
+                Action: ["sqs:*"],
+                Resource: "*",
+            },
         ],
     },
 
-    // import the function via paths
     functions: { importProductsFile, importFileParser },
     package: { individually: true },
     custom: {

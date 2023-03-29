@@ -2,71 +2,7 @@ import { getProductsByIdHandler } from "./handler"
 import { getSticksMock } from "@mocks/products"
 import { HttpStatusesMessages } from "@constants/http"
 import { getStocksMock } from "@mocks/stocks"
-import { Stick, StickStock, Stock } from "src/types"
-
-jest.mock("aws-sdk", () => {
-    const moduleProducts = jest.requireActual("@mocks/products")
-    const moduleStocks = jest.requireActual("@mocks/stocks")
-    const productsPromise = Promise.resolve(
-        moduleProducts.getSticksMock() as Stick[]
-    )
-    const stocksPromise = Promise.resolve(
-        moduleStocks.getStocksMock() as Stock[]
-    )
-
-    const AWS = {
-        DynamoDB: {
-            DocumentClient: jest.fn(() => ({
-                scan: jest.fn(() => ({
-                    promise: jest.fn(() =>
-                        Promise.resolve(productsPromise).then((sticks) => ({
-                            Items: sticks,
-                        }))
-                    ),
-                })),
-                query: jest.fn(
-                    ({
-                        TableName,
-                        ExpressionAttributeValues: {
-                            ":id": id,
-                            ":product_id": product_id,
-                        },
-                    }) => ({
-                        promise: jest.fn(() => {
-                            if (TableName === process.env.TABLE_PRODUCTS) {
-                                return productsPromise.then((sticks) => {
-                                    return {
-                                        Items: [
-                                            sticks.find(
-                                                (stick) => stick.id === id
-                                            ),
-                                        ],
-                                    }
-                                })
-                            }
-
-                            if (TableName === process.env.TABLE_STOCKS) {
-                                return stocksPromise.then((stocks) => {
-                                    return {
-                                        Items: [
-                                            stocks.find(
-                                                (stock) =>
-                                                    stock.product_id ===
-                                                    product_id
-                                            ),
-                                        ],
-                                    }
-                                })
-                            }
-                        }),
-                    })
-                ),
-            })),
-        },
-    }
-
-    return AWS
-})
+import { StickStock } from "src/types"
 
 describe("product-service", () => {
     describe("getProductsList", () => {

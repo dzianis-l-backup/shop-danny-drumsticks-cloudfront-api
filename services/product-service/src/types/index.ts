@@ -28,10 +28,22 @@ export enum HttpStatuses {
     INTERNAL_SERVER_ERROR = 500,
 }
 
+export enum HttpStatusesSuccess {
+    OK = HttpStatuses.OK,
+    CREATED = HttpStatuses.CREATED,
+}
+
 export interface StatusCode {
     statusCode: HttpStatuses
 }
 
 export interface ControllerResponse<T> extends StatusCode {
     payload: T | undefined
+}
+
+export type StickStockRaw = Omit<StickStock, "id">
+
+export enum BroadCasts {
+    Private = "Private",
+    Business = "Business",
 }

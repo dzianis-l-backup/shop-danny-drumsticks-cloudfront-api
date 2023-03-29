@@ -12,6 +12,30 @@ This is a monorepo for AWS API provisioning for the Danny drumsticks store
 -   [swagger-ui](https://eqkv6cw9rf.execute-api.eu-west-1.amazonaws.com/swagger)
 -   [/import](https://mil2oe0tfc.execute-api.eu-west-1.amazonaws.com/dev)
 
+# Task 6
+
+## Task 6.1
+- `λ catalogBatchProcess` batching new products records
+- SQS queue created
+- `batchSize: 5`
+- lambda iteration over SQS records
+
+## Task 6.2
+- `λ importFileParser` lambda to post messages to SQS
+- no Readable stream
+
+## Task 6.3
+- SNS Topic creation
+- subsctiption to the topic with an email receiver
+- updated `λ catalogBatchProcess` to push messages
+
+## Task 6.4
+PR
+
+## Additional tasks
+- +15 ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done`  - catalogBatchProcess lambda is covered by unit tests
+- +15 ![#00ff00](https://placehold.co/15x15/00ff00/00ff00.png) `done`  - set a Filter Policy for SNS createProductTopic in serverless.yml and create an additional email subscription to distribute messages to different emails depending on the filter for any product attribute
+
 # Task 5
 ## Task 5.1
 1. `import-service` created
