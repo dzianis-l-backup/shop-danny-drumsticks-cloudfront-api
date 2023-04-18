@@ -53,6 +53,25 @@ const serverlessConfiguration: AWS = {
 
     functions: { importProductsFile, importFileParser },
     package: { individually: true },
+    resources: {
+        Resources: {
+            GatewayResponseDefault403: {
+                Type: "AWS::ApiGateway::GatewayResponse",
+                Properties: {
+                    ResponseParameters: {
+                        "gatewayresponse.header.Access-Control-Allow-Origin":
+                            "'*'",
+                        "gatewayresponse.header.Access-Control-Allow-Headers":
+                            "'*'",
+                        "gatewayresponse.header.Access-Control-Allow-Methods":
+                            "'*'",
+                    },
+                    ResponseType: "DEFAULT_4XX",
+                    RestApiId: { Ref: "ApiGatewayRestApi" },
+                },
+            },
+        },
+    },
     custom: {
         esbuild: {
             bundle: true,

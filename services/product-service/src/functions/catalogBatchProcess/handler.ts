@@ -16,6 +16,7 @@ const refineRecordBody = (record: any) => {
     const body = JSON.parse(record.body)
 
     return {
+        id: body.id,
         title: body.title,
         description: body.description,
         price: Number(body.price),

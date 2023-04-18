@@ -1,11 +1,11 @@
 import { formatJSONResponse } from "@libs/api-gateway"
 import { HttpStatuses } from "@const/index"
-import { S3 } from "aws-sdk"
+import AWS from "aws-sdk"
 
 export const importProductsFile = async (event) => {
     try {
         const { name: fileName } = event.queryStringParameters || {}
-        const s3 = new S3({ region: process.env.REGION })
+        const s3 = new AWS.S3({ region: process.env.REGION })
 
         if (!fileName) {
             return formatJSONResponse({ statusCode: HttpStatuses.BadRequest })
